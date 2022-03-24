@@ -87,25 +87,7 @@ def drawPolylines(color='GREEN', thick=3):
     if(count < 2 ): return
     for i in range(count-1):
         drawLine(pts[i], pts[i+1], color,thick)
-
-    if (count != 3): return
-    u = 1/3
-    v = 1/3
-
-    ax = pts[0][0]
-    bx = pts[1][0]
-    cx = pts[2][0]
-
-    ay = pts[0][1]
-    by = pts[1][1]
-    cy = pts[2][1]
-
-    px = (1 - u - v)*ax + u*bx + v*cx
-    py = (1 - u - v)*ay + u*by + v*cy
-    drawLine(pts[0], pts[2], color, thick)
-    pygame.draw.rect(screen, RED, (px- margin, py - margin, 2 * margin, 2 * margin), 5)
-
-    #pygame.draw.line(screen, color, pts[i], pts[i+1], thick)
+        #pygame.draw.line(screen, color, pts[i], pts[i+1], thick)
 
 def barycentric(pta,ptb,ptc,p):
     sx = np.array([ptb[0] - pta[0],ptc[0]-pta[0],pta[0]-p[0]])
