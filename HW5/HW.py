@@ -71,28 +71,36 @@ def drawLine(pt0, pt1, color='GREEN', thick=3):
     # drawPoint(pt0, color, thick)
     # drawPoint(pt1, color, thick)
 
-def Lagrange(x,i):
-    value = 1
+def Fa(i):
+    res = 1
+    cur = i;
+    count = i
     for j in range(count):
-        if j != i:
-            value = value * ((x - pts[j][0])/(pts[i][0] - pts[j][0]))
-    return value
+        res = res *cur
+        cur=cur-1
+    return res
 
+def Bezier(t,i,n):
+    return ( Fa(n)/(Fa(i)*Fa(n-i)))* pow(t,i) *pow(1-t,n-i)
 
 def drawCurves(color='GREEN', thick=3):
-    if(count < 4): return
-    for dt in range(100):
-        t = dt/100
-        x =   (1-t)*(1-t)*(1-t)*pts[0][0]+3* t*(1-t)*(1-t)* pts[1][0] +3* t*t*(1-t)*pts[2][0] +t*t*t*pts[3][0]
-        y =   (1-t)*(1-t)*(1-t)*pts[0][1]+3* t*(1-t)*(1-t)* pts[1][1] +3* t*t*(1-t)*pts[2][1] +t*t*t*pts[3][1]
-        drawPoint([x, y], color, thick)
+    if(count < 3): return
+    for dt in range(width):
+        t = dt/width
+        x = 0
+        y = 0
+        for ptIndex in range(count):
+            bezier = Bezier(t,ptIndex,count-1)
+            # print(repr(ptIndex)+":"+repr(bezier))
+            x = x+  pts[ptIndex][0] * bezier
+            y = y+  pts[ptIndex][1] * bezier
 
+        drawPoint([x, y], color, thick)
 
 def drawPolylines(color='GREEN', thick=3):
     if(count < 2): return
     for i in range(count-1):
         drawLine(pts[i], pts[i+1], color,thick)
-        #pygame.draw.line(screen, color, pts[i], pts[i+1], thick)
 
 #Loop until the user clicks the close button.
 done = False
@@ -134,8 +142,7 @@ while not done:
     if len(pts)>1:
         drawPolylines(GREEN, 1)
         drawCurves(RED, 1)
-        # drawLagrangePolylines(BLUE, 10, 3)
-
+    
     # Go ahead and update the screen with what we've drawn.
     # This MUST happen after all the other drawing commands.
     pygame.display.flip()
