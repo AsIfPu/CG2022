@@ -29,6 +29,7 @@ tangents.append([1,0])
 tangents.append([0,-1])
 tangents.append([-1,-1])
 pts = [] 
+pts.append([330.,440.])
 pts.append([130.,140.])
 pts.append([350.,320.])
 pts.append([550.,450.])
